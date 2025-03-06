@@ -1,0 +1,62 @@
+' プレビュー表示...英数入力にした上でoption+D
+
+' @startuml シーケンス図_PriceCalculator
+
+' actorで人型、Participantでボックスを定義
+' asで別名を定義、処理の中で利用できる
+actor user
+Participant main.go as MA
+Participant prices.go as MA
+Participant filemanager.go as FM
+Participant iomanager.go as IO
+Participant conversion.go as CV
+Participant cmdmanager.go as CMD
+
+' ==でイベントごとにシーケンスを分割
+== 初期表示 ==
+' autonumber：処理に番号を自動でつけられる、
+' イベントの初めに定義すればそこから番号を付与
+autonumber
+
+user -> FE : 処理開始
+activate BE
+
+    ' note でAPI名や一言メモを残す
+    note right
+        履歴データの取得
+    end note
+
+
+' @enduml
+
+@startuml
+title シーケンス図_PriceCalculator
+
+actor User
+participant Main
+participant CMDManager
+participant Prices
+participant IOManager
+participant FileManager
+participant Conversion
+
+User -> Main: Start Application
+Main -> CMDManager: New()
+CMDManager -> Main: cmdm(ReadLines(), WriteResults()を呼び出せるオブジェクト)
+Main -> Prices: NewTaxIncludedPriceJob(CMDManager, taxRate)
+Prices -> Main: input_price(税抜き価格), tax_rate(税率) 
+Main -> Prices: Process()
+
+Prices -> Prices: LoadData()
+Prices -> CMDManager: ReadLines()
+CMDManager -> User: Input prices
+CMDManager -> Prices: Return prices
+
+Prices -> Conversion: StringsToFloats(lines)
+Conversion -> Prices: Return converted float values
+
+Prices -> Prices: Calculate tax-included prices
+Prices -> CMDManager: WriteResult(job)
+CMDManager -> User: Display result
+
+@enduml∂

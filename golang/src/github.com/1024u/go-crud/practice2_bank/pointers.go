@@ -7,8 +7,10 @@ func pointers() {
 
 	var agePointer *int
 
+	//&...その変数に格納された値を取得できる
 	agePointer = &age
 
+	//*...その変数に格納された値のアドレスを取得できる。
 	fmt.Println("Age:", *agePointer)
 
 	// adultYears := getAdultYears(age)
