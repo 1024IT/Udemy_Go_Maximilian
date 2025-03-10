@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/1024u/go-crud/Section11_REST-API/db"
-	"github.com/1024u/go-crud/Section11_REST-API/routes"
+	"github.com/1024u/Udemy_Go_Maximilian/Section11_REST-API/db"
+	"github.com/1024u/Udemy_Go_Maximilian/Section11_REST-API/routes"
 	"github.com/gin-gonic/gin"
 )
 

@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	//"go-crud/initializers"
+	//"Udemy_Go_Maximilian/initializers"
 	"math"
 )
 

@@ -1,6 +1,6 @@
 package models
 
-import "github.com/1024u/go-crud/Section11_REST-API/db"
+import "github.com/1024u/Udemy_Go_Maximilian/Section11_REST-API/db"
 
 type User struct {
 	ID       int64

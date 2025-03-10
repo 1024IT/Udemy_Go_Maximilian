@@ -1,4 +1,4 @@
-module github.com/1024u/go-crud/Section11_REST-API
+module github.com/1024u/Udemy_Go_Maximilian/Section11_REST-API
 
 go 1.24.0
 

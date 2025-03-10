@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/1024u/go-crud/Section11_REST-API/db"
+	"github.com/1024u/Udemy_Go_Maximilian/Section11_REST-API/db"
 )
 
 type Event struct {

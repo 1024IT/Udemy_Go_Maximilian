@@ -3,7 +3,7 @@ package db
 
 import (
 	"database/sql"
-	// "github.com/1024u/go-crud/Section11_REST-API/models"
+	// "github.com/1024u/Udemy_Go_Maximilian/Section11_REST-API/models"
 
 	_ "github.com/mattn/go-sqlite3"
 )
