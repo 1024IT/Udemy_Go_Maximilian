@@ -51,6 +51,7 @@ func getEvent(context *gin.Context) {
 
 // POSTリクエストの処理（データ作成）
 func createEvent(context *gin.Context) {
+
 	//models.Event...event.goのEvent structの空の変数を宣言
 	var event models.Event
 	//.ShouldBindJSON()...リクエストボディのJSONデータをGoの構造体にバインド（マッピング）する。
@@ -62,9 +63,11 @@ func createEvent(context *gin.Context) {
 		return
 	}
 
-	//Event structの各変数に値を挿入
-	event.ID = 1
-	event.UserID = 1
+	//"userId"の値を取得
+	userId := context.GetInt64("userId")
+
+	//Event structに、イベントを作成したユーザのIDを格納
+	event.UserID = userId
 
 	//event.goのEvent structに値を格納(セーブする)
 	event.Save()
@@ -90,12 +93,21 @@ func updateEvent(context *gin.Context) {
 		return
 	}
 
+	//"userId"の値を取得
+	userId := context.GetInt64("userId")
+
 	//入力されたIDのイベント（更新前のイベント）を取得
 	//※GetEventByID()の返却値はmodelsフォルダのevent.goに記載のEvent structに格納されるので、ここでデータは受け取らない。
-	_, err = models.GetEventByID(eventId)
+	event, err := models.GetEventByID(eventId)
 
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"message": "Could not fetch the event."})
+		return
+	}
+
+	//指定したイベントのユーザーのIDと、ログインしたユーザーのIDが一致しているか確認
+	if event.UserID != userId {
+		context.JSON(http.StatusUnauthorized, gin.H{"message": "Not authorized to update event."})
 		return
 	}
 
@@ -128,12 +140,21 @@ func deleteEvent(context *gin.Context) {
 		return
 	}
 
+	//ログインしたユーザーのID("userId")の値を取得
+	userId := context.GetInt64("userId")
+
 	//入力されたIDのイベント（更新前のイベント）を取得
 	//※GetEventByID()の返却値はmodelsフォルダのevent.goに記載のEvent structに格納されるので、ここでデータは受け取らない。
 	event, err := models.GetEventByID(eventId)
 
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"message": "Could not fetch the event."})
+		return
+	}
+
+	//指定したイベントのユーザーのIDと、ログインしたユーザーのIDが一致しているか確認
+	if event.UserID != userId {
+		context.JSON(http.StatusUnauthorized, gin.H{"message": "Not authorized to delete event."})
 		return
 	}
 

@@ -14,13 +14,13 @@ type Event struct {
 	Description string    `binding:"required"`
 	Location    string    `binding:"required"`
 	DateTime    time.Time `binding:"required"`
-	UserID      int
+	UserID      int64
 }
 
 // スライスの宣言
 var events = []Event{}
 
-func (e Event) Save() error {
+func (e *Event) Save() error {
 	//?...プレースホルダー。SQLiteで使用される特別な記号で、クエリ実行時にデータが渡される場所
 	query := `
 	INSERT INTO events(name, description, location, dateTime, user_id)
@@ -139,6 +139,36 @@ func (event Event) Delete() error {
 	//Exec()...データの変更(INSERT, UPDATE, DELETE)を行うクエリを実行する。
 	// 		   具体的には、変数stmtに格納されたクエリの「?(プレースホルダ)」に、Event structで取得したデータを格納
 	_, err = stmt.Exec(event.ID)
+
+	return err
+}
+
+func (e Event) Register(userId int64) error {
+	query := "INSERT INTO registrations(event_id, user_id) VALUES (?, ?)"
+	stmt, err := db.DB.Prepare(query)
+
+	if err != nil {
+		return err
+	}
+
+	defer stmt.Close()
+
+	_, err = stmt.Exec(e.ID, userId)
+
+	return err
+}
+
+func (e Event) CancelRegistration(userId int64) error {
+	query := "DELETE FROM registrations WHERE event_id = ? AND user_id = ?"
+	stmt, err := db.DB.Prepare(query)
+
+	if err != nil {
+		return err
+	}
+
+	defer stmt.Close()
+
+	_, err = stmt.Exec(e.ID, userId)
 
 	return err
 }
