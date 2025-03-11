@@ -3,8 +3,8 @@ package routes
 import (
 	"net/http"
 
-	"github.com/1024u/go-crud/Section11_REST-API/models"
-	"github.com/1024u/go-crud/Section11_REST-API/utils"
+	"github.com/1024u/Udemy_Go_Maximilian/Section11_REST-API/models"
+	"github.com/1024u/Udemy_Go_Maximilian/Section11_REST-API/utils"
 	"github.com/gin-gonic/gin"
 )
 
